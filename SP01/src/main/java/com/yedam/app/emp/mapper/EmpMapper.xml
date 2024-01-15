@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  <!-- EmpMapper 인터페이스의 경로를 설정 -->
+  <mapper namespace="com.yedam.app.emp.mapper.EmpMapper">
+  	<select id="selectEmpList" resultType="EmpVO">
+		SELECT employee_id, last_name, email, hire_date, job_id, salary
+			FROM employees
+			ORDER BY employee_id 		  		
+  	</select>
+  	
+  	<!-- #은 preparedStatement, ?에 대응되는 값을 넣어줌 -->
+  	<select id="selectEmpInfo" resultType="EmpVO">
+  		SELECT employee_id, last_name, email, hire_date, job_id, salary
+			FROM employees
+			WHERE employee_id = #{employeeId}
+  	</select>
+  	
+  	<!-- 
+  		selectKey는 insert update안에서 사용가능.
+  		insert와 update안에서 select문을 동작할 수 있게끔 해줌.
+  	 -->
+  	<insert id="insertEmpInfo" parameterType="EmpVO">
+  		<!-- 최소한 3개 필요 -->
+  		<!-- SELECT key의 결과는 parameterType에 담긴다. -->
+  		<!-- insert전에 조회할건지 후에 할건지 선택 -->
+  		<selectKey 
+  					keyProperty="employeeId"
+  					resultType="int"
+  					order="BEFORE"> 
+  			SELECT NVL(MAX(employee_id),0) + 1
+  				FROM employees
+  		</selectKey>
+  		INSERT INTO employees
+  		(
+  			employee_id,last_name,email,hire_date,job_id,salary
+  		)
+  		VALUES ( #{employeeId}, #{lastName}, #{email}, #{hireDate}, #{jobId}, #{salary} )
+  	</insert>
+  	<update id="updateEmpInfo" parameterType="EmpVO">
+  		UPDATE employees SET last_name = #{lastName}, email = #{email}, salary = #{salary} WHERE employee_id = #{employeeId}
+  	</update>
+  	<delete id="deleteEmpInfo" parameterType="int">
+  		<!-- 매개변수가 한개라면 이름이 무엇이든 상관없음. -->
+  		DELETE FROM employees WHERE employee_id = #{eId}
+  	</delete>
+  	
+  	<!-- dynamic sql -->
+  	<update id="updateEmpInfoDynamic" parameterType="EmpVO">
+  		UPDATE employees SET 
+  		<choose>
+  			<when test="lastName != null and !lastName.equals('')">
+  				last_name = #{lastName}
+  			</when> 
+  			<otherwise>
+  				last_name = 'Any'
+  			</otherwise>
+  		</choose>
+  			<if test="email != null">
+  				, email = #{email}
+  			</if>
+  			<if test="salary >= 0">
+  				, salary = #{salary}
+  			</if>
+  			<where>
+  				<if test="employeeId > 0">
+  					employee_id = #{employeeId}
+  				</if>
+  			</where>
+  	</update>
+  	
+  	<!-- 매개변수 두개 -->
+  	<update id="updateEmpSal">
+  		UPDATE employees SET salary = salary * #{info.salary} WHERE employee_id = #{eId}
+  	</update>
+  	
+  </mapper>

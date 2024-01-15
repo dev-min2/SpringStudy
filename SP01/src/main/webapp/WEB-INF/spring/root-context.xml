@@ -8,8 +8,7 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
 	
 	<!-- Root Context: defines shared resources visible to all other web components -->
-	
-	<context:property-placeholder location="classpath:database.properties"/>
+	<context:property-placeholder location="classpath:database.properties" />
 	
 	<!-- datasource connection pool -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
@@ -26,9 +25,13 @@
 	<!-- mybatis  SqlSessionFactory -->
 	<bean class="org.mybatis.spring.SqlSessionFactoryBean">
   		<property name="dataSource" ref="dataSource"/>
+  		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
+  		<!-- mapperLocation. 설정할 시 Mapper인터페이스와 xml 이름을 동일하게 할 필요없어짐.-->
+  		
 	</bean>
 	
-	<!-- mapper scan -->
-	<mybatis-spring:scan base-package="com.yedam.app.**.mapper" /> 
+	
+	<!-- mybatis 컨테이너가 필요한 bean들 -->
+	<mybatis-spring:scan base-package="com.yedam.app.**.mapper" />
 
 </beans>
