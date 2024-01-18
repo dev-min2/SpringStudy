@@ -2,6 +2,8 @@
     pageEncoding="UTF-8"%>
    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,10 +30,9 @@
                         ${boardInfo.contents }
                     </div>
                     <div class="card-footer">
-                    	
-                    		<!-- 경로생성 url -->
-                    	<img src="<c:url value="/resources/${boardInfo.image}"/>" />;
-                    	
+                    	<c:if test="${fn:length(boardInfo.image) > 0}">
+                    		<img src="<c:url value="/resources/${boardInfo.image}"/>" />
+                    	</c:if>
                     </div>
                 </div>
                 <div class="mt-1 text-right" v-if="$store.state.userNo == boardUserNo ">
