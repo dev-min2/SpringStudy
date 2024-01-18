@@ -28,6 +28,7 @@
   		<property name="configLocation" value="classpath:mybatis-config.xml"></property>
   		<!-- mapperLocation. 설정할 시 Mapper인터페이스와 xml 이름을 동일하게 할 필요없어짐.-->
   		
+  		<!--  -->
 	</bean>
 	
 	

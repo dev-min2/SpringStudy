@@ -38,7 +38,7 @@
 		<div>
 			<button type="button" onclick="location.href='empList'">목록으로</button>
 			<button type="button" id="updateBtn">수정</button>
-			<button type="button">삭제</button>
+			<button type="button" onclick="location.href='empDelete?eid=${empInfo.employeeId}'">삭제</button>
 		</div>
 	</form>
 	<script>
@@ -56,6 +56,19 @@
 			.then(res => res.json())
 			.then(result => {
 				console.log('query', result);		
+			})
+			
+			fetch('empUpdateAjax', {
+				method : 'post',
+				headers : {
+					'content-type' : 'application/json'
+				},
+				body : JSON.stringify(empInfo) // 객체를 json문자열로 보낸다.
+				
+			})
+			.then(res => res.json())
+			.then(result => {
+				console.log('JSON', result);		
 			})
 		}
 		

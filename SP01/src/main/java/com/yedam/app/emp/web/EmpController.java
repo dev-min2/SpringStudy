@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yedam.app.emp.service.EmpService;
@@ -15,6 +16,9 @@ import com.yedam.app.emp.service.EmpVO;
 
 @Controller
 public class EmpController {
+	
+	// @RequestBody : json요청 데이터를 java object로
+	// @ResponseBody : javaObject를 json 응답 데이터로.
 	
 	@Autowired
 	private EmpService empService;
@@ -77,4 +81,9 @@ public class EmpController {
 	}
 	
 	//사원삭제 - PROCESS
+	@GetMapping("empDelete")
+	public String empDelete(@RequestParam Integer eid) { // @RequestParam은 명시적으로 선언시 required가 true가 됨.
+		empService.deleteEmpInfo(eid);
+		return "redirect:empList";
+	}
 }

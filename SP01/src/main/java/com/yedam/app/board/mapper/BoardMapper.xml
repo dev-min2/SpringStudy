@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- EmpMapper 인터페이스의 경로를 설정 -->
+ <mapper namespace="com.yedam.app.board.mapper.BoardMapper">
+  	<select id="selectBoardList" resultType="BoardVO">
+		SELECT bno, title, contents, writer, regdate, updatedate, image
+			FROM tbl_board_01
+			ORDER BY bno 		  		
+  	</select>
+  	
+  	<!-- #은 preparedStatement, ?에 대응되는 값을 넣어줌 -->
+  	<select id="selectBoardInfo" resultType="BoardVO">
+  		SELECT bno, title, contents, writer, regdate, updatedate, image 
+			FROM tbl_board_01
+			WHERE bno = #{bno}
+  	</select>
+  	
+  	<!-- 
+  		selectKey는 insert update안에서 사용가능.
+  		insert와 update안에서 select문을 동작할 수 있게끔 해줌.
+  	 -->
+  	<insert id="insertBoard" parameterType="BoardVO">
+  		<selectKey
+  					keyProperty="bno"
+  					resultType="int"
+  					order="BEFORE"> 
+  					SELECT NVL(MAX(bno),0) + 1
+  						FROM tbl_board_01
+  		</selectKey>
+  		INSERT INTO tbl_board_01
+  		(
+  			bno, title, contents, writer, updatedate, image 
+  		)
+  		VALUES ( #{bno}, #{title}, #{contents}, #{writer}, #{updatedate}, #{image} )
+  	</insert>
+  	
+  	<update id="updateBoard" parameterType="BoardVO">
+  		UPDATE tbl_board_01 SET title = #{title}, contents = #{contents}, writer = #{writer}, updatedate = #{updatedate}, image = #{image} WHERE bno = #{bno}
+  	</update>
+  	<delete id="deleteBoard" parameterType="int">
+  		<!-- 매개변수가 한개라면 이름이 무엇이든 상관없음. -->
+  		DELETE FROM tbl_board_01 WHERE bno = #{bno}
+  	</delete>
+ </mapper>
