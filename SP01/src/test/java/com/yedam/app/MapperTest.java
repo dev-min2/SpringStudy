@@ -11,23 +11,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.yedam.app.aop.service.AaaService;
 import com.yedam.app.board.mapper.BoardMapper;
 import com.yedam.app.board.service.BoardVO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "file:src/main/webapp/WEB-INF/spring/*-context.xml")
+@ContextConfiguration(locations = "file:src/main/webapp/WEB-INF/spring/**/*-context.xml")
 public class MapperTest {
 
 	@Autowired
 	private BoardMapper boardMapper;
 
-	@Test
+	//@Test
 	public void selectAll() {
 		List<BoardVO> list = boardMapper.selectBoardList();
 		assertTrue(!list.isEmpty());
 	}
 	
-	@Test
+	//@Test
 	public void select() {
 		BoardVO vo = new BoardVO();
 		vo.setBno(2);
@@ -35,7 +36,7 @@ public class MapperTest {
 		assertTrue(vo != null);
 	}
 	
-	@Test
+	//@Test
 	public void insert() {
 		BoardVO newVO = new BoardVO();
 		newVO.setContents("내용임");
@@ -47,7 +48,7 @@ public class MapperTest {
 		assertTrue(result != 0);
 	}
 	
-	@Test
+	//@Test
 	public void update() {
 		BoardVO findVO = new BoardVO();
 		findVO.setBno(2);
@@ -57,6 +58,15 @@ public class MapperTest {
 		int result = boardMapper.updateBoard(updateVO);
 		assertTrue(result != 0);
 	}
+	
+	@Autowired
+	private AaaService aaaService;
+	
+	@Test
+	public void aopTestA() {
+		aaaService.insert();
+	}
+	
 //	
 //	@Test
 //	public void delete() {

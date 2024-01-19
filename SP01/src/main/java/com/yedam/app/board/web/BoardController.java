@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -51,13 +51,19 @@ public class BoardController {
 	
 	//수정 - 페이지 : URI - boardUpdate / PARAMETER - BoardVO / RETURN - board/boardUpdate
 	@GetMapping("boardUpdate")
-	public String boardUpdateControl() {
+	public String boardUpdateControl(BoardVO boardVO, Model model) {
+		BoardVO findVO = boardService.getBoardInfo(boardVO);
+		model.addAttribute("boardInfo", findVO);
+		
+		// 입력을 받아야하기에 별도의 페이지로 구성 
 		return "board/boardUpdate";
 	}
 	//수정 - 처리(ajax) : URI - boardUpdate / PARAMETER - BoardVO / RETURN - 수정결과 데이터(Map)
-	@PutMapping("boardUpdate")
+	@PostMapping("boardUpdate")
 	@ResponseBody
-	public Map<String, Object> boardAjaxUpdateControl(BoardVO vo) {
+	public Map<String, Object> boardAjaxUpdateControl(@RequestBody BoardVO vo, Model model) {
+		// ajax를 기반으로 통신을 할 떄 @RequestBody를 쓰면 json -> javaObject변환 과정을거침
+		// 그게 아니면 queryString방식 (key=value)형태로만 데이터가 전달됨.
 		return boardService.modifyBoard(vo);
 	}
 	

@@ -4,12 +4,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 
-<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-</head>
 <body>
 
 <div class="container mt-3">
@@ -31,17 +25,15 @@
                     </div>
                     <div class="card-footer">
                     	<c:if test="${fn:length(boardInfo.image) > 0}">
-                    		<img src="<c:url value="/resources/${boardInfo.image}"/>" />
+                    		<img style="width:200px;" src="<c:url value="/resources/${boardInfo.image}"/>" />
                     	</c:if>
                     </div>
                 </div>
                 <div class="mt-1 text-right" v-if="$store.state.userNo == boardUserNo ">
                 	<button style="background-color:#bbbbbb; border:0;" class="btn btn-primary" onclick="location.href='boardList'">목록으로</button>
-                    <button style="background-color:#acb1f8; border:0; margin : 10px;" class="btn btn-primary"  >수정하기</button>
+                    <button style="background-color:#acb1f8; border:0; margin : 10px;" class="btn btn-primary" onclick="location.href='boardUpdate?bno=${boardInfo.bno}'" >수정하기</button>
                     <button style="background-color:#bbbbbb; border:0;" class="btn btn-primary" onclick="location.href='boardDelete?bno=${boardInfo.bno}'">삭제하기</button>
                 </div>
             </div>
         </div>
     </div>
-</body>
-</html>

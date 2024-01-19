@@ -9,11 +9,19 @@
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing infrastructure -->
 	
+	<!-- path.properties 읽어들임(첨부파일관련) -->
+	<context:property-placeholder location="classpath:path.properties" />
+	
 	<!-- Enables the Spring MVC @Controller programming model -->
 	<annotation-driven />
 
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
+	
+	<!-- 첨부파일 관련 -->
+	<resources mapping="/images/**" location="${file.loading.path}" />
+	
+	
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources in the /WEB-INF/views directory -->
 	<beans:bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
@@ -35,9 +43,13 @@
 		<beans:property name="order" value="1" /> 		
  	</beans:bean>
 	
-	<context:component-scan base-package="com.yedam.app" />
+	<!-- 첨부파일 처리 관련 bean -->
+	<beans:bean id="multipartResolver" class="org.springframework.web.multipart.support.StandardServletMultipartResolver" />
 	
-	
-	
+	<context:component-scan base-package="com.yedam.app" use-default-filters="false">
+		<!-- 특정 대상만 include함. -->
+		<!-- Controller만 스캔한다. -->
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller" />
+	</context:component-scan>
 	
 </beans:beans>
