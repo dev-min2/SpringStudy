@@ -37,7 +37,7 @@
                 </tr>
                 <tr>
                   <td colspan="2" style="text-align:center;">
-                    <button type="submit" class="btn text-white" style="background-color: #fab3cc; margin : 10px;">등록</button>
+                    <button type="submit" class="btn text-white" style="background-color: blue; margin : 10px;">등록</button>
                     <button type="button" class="btn text-white" style="background-color: #bbbbbb;" onclick="location.href='bookList'">작성취소</button>
                   </td>
                 </tr>
